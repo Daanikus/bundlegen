@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 
 	yaml "gopkg.in/yaml.v2"
 )
@@ -40,6 +41,9 @@ func main() {
 
 	var tenets []string
 	for _, dir := range dirs {
+		if !dir.IsDir() {
+			continue
+		}
 		tenets = append(tenets, dir.Name())
 	}
 
@@ -49,8 +53,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	err = ioutil.WriteFile(wd+"/lingo_bundle.yaml", newData, 0664)
+	path := filepath.Join(wd, "lingo_bundle.yaml")
+	err = ioutil.WriteFile(path, newData, 0664)
 	if err != nil {
 		log.Fatal(err)
 	}
